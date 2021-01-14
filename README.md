@@ -1,21 +1,21 @@
 # Powershell-Attack-Guide
-Powershell攻击指南----黑客后渗透之道
+Powershell Attack guide-the way to penetrate after hackers
 
-## 前言
-> 时隔许久再来更新曾经的文章，对其中一些知识点重新理解记录。（2020-4-13）另外，重新更新了更可读的gitbook：https://rootclay.gitbook.io/powershell-attack-guide/
+## Foreword
+> After a long time, I will update the previous articles and re-understand and record some of the knowledge points. (2020-4-13) In addition, a more readable gitbook has been re-updated: https://rootclay.gitbook.io/powershell-attack-guide/
 
-> 本文首发于安全客，原文专题页面:https://www.anquanke.com/subject/id/90541
+> This article first appeared on the security guest, the original topic page:https://www.anquanke.com/subject/id/90541
 
-> 一段时间以来研究Powershell，后来应朋友们对Powershell的需求，让我写一个Powershell安全入门或者介绍方面的文章，所以这篇文章就出现了。但又因为各种各样的事情搞得有些拖延，同时作者文笔不好，文章可能有不流畅的地方，还请多多见谅。这里做一些总结，来让新人对此有个大致了解，能对Powershell或是内网有更多的理解。
+> I have been studying Powershell for a period of time. Later, in response to my friends' needs for Powershell, I asked me to write an article on the introduction or introduction of Powershell security, so this article appeared. But it was delayed due to various things, and at the same time the author's writing was not good, and the article may have some irregularities. Please excuse me. Here are some summaries to let newcomers have a general understanding of this, and have a better understanding of Powershell or intranet.
 
-> 那么开始之前我们先来思考一下powershell一个常见的问题，那么我们知道powershell的后缀是ps1，哪为什么是ps1而不是ps2,ps3呢？那么理解这个问题呢我们可以看看powershell的特性，powershell是对下完全兼容的，也就是说你使用powershell 5.x的版本来执行powershell v1.0的代码也是完全没有问题的。那么我个人理解一下为什么是ps1，可以这么说，当我们见到ps2后缀之时就是powershell进行大的更新，也就是不对下兼容的时候，所以这里一直是使用ps1后缀。
-
-
-> 那么对于我们的安全人员来说我们用什么版本呢？毫无疑问是v2,为什么呢，应为在win7当中默认安装了v2,而且之后的版本都是兼容v2的，v1版本所有的功能对于我们的需求很多都不能瞒住，所以v2成为了我们目前来说独一无二的选择，通过下面的方式我们可以看到我们的powershell的版本与一些详细的信息，后面我们的代码，大多都是以v2.0来讨论的。（经过最新的修改后可能部分功能用到最新的Powershell7.0）
+> So before we start, let's think about a common problem of powershell. Then we know that the suffix of powershell is ps1. Why is it ps1 instead of ps2, ps3? So to understand this problem, we can look at the characteristics of powershell, powershell is fully compatible with the next, that is to say you use powershell 5.x version to execute powershell v1.0 code is also completely no problem. Well, I personally understand why it is ps1. It can be said that when we see the suffix of ps2, powershell is undergoing a major update, that is, when it is not compatible with the next, so the suffix of ps1 is always used here.
 
 
+> So what version do we use for our security personnel? There is no doubt that it is v2. Why? It should be that v2 is installed by default in win7, and the later versions are compatible with v2. All the functions of v1 version can not hide many of our needs, so v2 has become our current For a unique choice, we can see the version of our powershell and some detailed information in the following way. Most of our code behind is discussed in v2.0. (After the latest modification, some functions may use the latest Powershell7.0)
 
-通过命令`Get-Host`可以获取当前的PS版本信息等
+
+
+The current PS version information can be obtained through the command `Get-Host`
 
 ```powershell
 Name             : ConsoleHost
@@ -28,23 +28,22 @@ PrivateData      : Microsoft.PowerShell.ConsoleHost+ConsoleColorProxy
 IsRunspacePushed : False
 Runspace         : System.Management.Automation.Runspaces.LocalRunspace
 ``` 
+There are mainly the following two scenarios for security personnel to learn ps:
 
-对于安全人员学习ps主要有以下两个场景：
+1. In the first type, we need to obtain anti-kill or better covertly attack the opponent's win machine, and we can directly execute commands through phishing and other methods.
+2. The second type is that we have already reached the other party's network, and no matter how bad it is, it is also a DMZ win-server, so what we use ps to do naturally is to continue to deepen the intranet.
 
-1. 第一种我们需要获得免杀或者更好的隐蔽攻击对方的win机器，可以通过钓鱼等方式直接执行命令。
-2. 第二种我们已经到了对方网络，再不济也是一台DMZ的win-server，那么我们利用ps做的事情那么自然而然的是对内网继续深入。
+Then this powershell series mainly involves content related to security testing, so the readers are mainly security or operation and maintenance personnel. No matter what role you play in the network world, you should be able to get what you want here. The article mainly contains the following content:
 
-那么本powershell系列主要是内容涉及和安全测试相关的内容，所以面向的读者主要是安全或者运维人员，不管你是在网络世界中扮演什么角色，在这里应该是能收获到你想要的。文章主要包含下面一些内容:
-
-1. powershell基础语法
-2. powershell脚本编写与调用执行
-3. powershell的Socket编程
-4. powershell端口扫描与服务爆破
-5. powershell多线程
-6. powershell操作wmi与.net
-7. powershell操作win32API
-8. powershell操作Dll注入&shellcode注入&exe注入
-9. powershell混淆
-10. powershell事件日志
-11. powershell实例使用场景
-12. Powershell渗透工具集
+1. Powershell basic syntax
+2. Powershell script writing and call execution
+3. Powershell Socket programming
+4. Powershell port scanning and service blasting
+5. Powershell multithreading
+6. Powershell operation wmi and .net
+7. Powershell operation win32API
+8. Powershell operation Dll injection & shellcode injection & exe injection
+9. Powershell confusion
+10. powershell event log
+11. Powershell instance usage scenarios
+12. Powershell penetration tool set
